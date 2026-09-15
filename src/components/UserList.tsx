@@ -20,7 +20,7 @@ export default function UserList({ newUser }: UserListProps) {
   const [error, setError] = useState("");
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
-  // State untuk Pagination & Carian
+  // State untuk Pagination & searching
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -45,7 +45,7 @@ export default function UserList({ newUser }: UserListProps) {
       });
   }, [page]);
 
-  // Tambah user baharu ke senarai (papar di page 1)
+  // Tambah user baru in list (show at page 1)
   useEffect(() => {
     if (newUser && page === 1) {
       const nameParts = newUser.name.trim().split(" ");
@@ -64,7 +64,7 @@ export default function UserList({ newUser }: UserListProps) {
     }
   }, [newUser, page]);
 
-  // Tapis senarai pengguna berdasarkan carian nama/emel
+//untuk cari user by name or email
   const filteredUsers = users.filter((user) => {
     const fullName = `${user.first_name} ${user.last_name}`.toLowerCase();
     const email = user.email.toLowerCase();
@@ -77,7 +77,7 @@ export default function UserList({ newUser }: UserListProps) {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "15px" }}>
         <h3 style={{ margin: 0 }}>User List</h3>
 
-        {/* Input Carian */}
+        {/* Input for searching */}
         <input
           type="text"
           placeholder="Search user by name or email..."
@@ -99,7 +99,7 @@ export default function UserList({ newUser }: UserListProps) {
 
       {!loading && !error && (
         <>
-          {/* Grid Senarai Pengguna dengan Hover Effect */}
+          {/*  Senarai user dengan Hover Effect */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "15px" }}>
             {filteredUsers.length > 0 ? (
               filteredUsers.map((user) => {

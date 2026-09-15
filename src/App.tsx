@@ -13,7 +13,7 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
 
-          {/* Laluan yang perlukan login */}
+          {/* routes that require to login */}
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Home />} />
             <Route path="/users" element={<User />} />

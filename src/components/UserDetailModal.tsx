@@ -41,7 +41,7 @@ export default function UserDetailModal({ userId, onClose }: UserDetailModalProp
       })
       .catch((err) => {
         console.error("Error fetching user details:", err);
-        // Kendalikan 404 khusus untuk mock user baharu
+        
         if (err.response?.status === 404) {
           setError(
             `User with ID ${userId} is a newly created mock user. ReqRes API does not persist new entries on their server, so details cannot be fetched via API.`

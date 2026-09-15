@@ -18,7 +18,7 @@ export default function Login() {
       await login(email, password);
       navigate("/dashboard", { replace: true });
     } catch (err: any) {
-      // Paparkan error sebenar kat skrin supaya kita nampak apa yang rosak
+     
       setError("Error: " + (err.response?.data?.error || err.message));
     }
   };
