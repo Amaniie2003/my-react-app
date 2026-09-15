@@ -1,4 +1,4 @@
-import ApiUserList from "../../components/ApiUserList";
+import ApiUserList from "../components/ApiUserList";
 
 function Users() {
   return (
