@@ -61,6 +61,12 @@ export default function UserDetailModal({ userId, initialUser, onClose }: UserDe
         if (err.response?.status === 404) {
           setUser(null);
           setError(`User with ID ${userId} is a newly created mock user. Details cannot be fetched via API.`);
+        } else if (initialUser) {
+          setUser(initialUser);
+          setSupport({
+            url: "https://reqres.in",
+            text: "Profile loaded directly from active session cache.",
+          });
         } else {
           setError("Failed to fetch user details.");
         }
