@@ -26,6 +26,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         logoutRequest();
         localStorage.removeItem("accessToken");
         localStorage.removeItem("userEmail");
+        localStorage.removeItem("custom_users");
         setToken(null);
         setEmail(null);
     };

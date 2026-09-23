@@ -1,13 +1,7 @@
 // src/hooks/useUsersPage.ts
 import { useEffect, useState } from "react";
 import apiClient from "../services/apiClient";
-
-interface User {
-  id: number;
-  email: string;
-  first_name: string;
-  last_name: string;
-}
+import { User } from "../types/user";
 
 interface UsersPageResponse {
   page: number;

@@ -8,6 +8,7 @@ export default function LogoutButton() {
     // Clear access token and user session from localStorage
     localStorage.removeItem("accessToken");
     localStorage.removeItem("userEmail");
+    localStorage.removeItem("custom_users");
     
     // Redirect user back to the login page
     navigate("/login");

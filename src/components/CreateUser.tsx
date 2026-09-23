@@ -20,10 +20,8 @@ export default function CreateUser({ onUserCreated }: CreateUserProps) {
     setSuccessMessage("");
 
     try {
-      // Send POST request to ReqRes API
       const response = await apiClient.post("/users", { name, job });
-      
-      setSuccessMessage(`Success! User "${response.data.name}" (ID: ${response.data.id}) has been created.`);
+      setSuccessMessage(`User "${response.data.name}" created successfully!`);
       
       if (onUserCreated) {
         onUserCreated({
@@ -33,7 +31,6 @@ export default function CreateUser({ onUserCreated }: CreateUserProps) {
         });
       }
 
-      // Reset form fields
       setName("");
       setJob("");
     } catch (err) {
@@ -44,38 +41,68 @@ export default function CreateUser({ onUserCreated }: CreateUserProps) {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "20px auto", padding: "20px", border: "1px solid #ddd", borderRadius: "8px" }}>
-      <h3>Add New User</h3>
-      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 w-full transition-colors">
+      <div className="border-b border-slate-100 dark:border-slate-800 pb-6 mb-8">
+        <h3 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Add New Member</h3>
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Register a new user to the platform database</p>
+      </div>
+
+      {successMessage && (
+        <div className="p-4 mb-6 text-sm font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 rounded-2xl border border-emerald-100 dark:border-emerald-900/40 flex items-center gap-3 animate-in slide-in-from-top-2">
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
+          {successMessage}
+        </div>
+      )}
       
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-        <div>
-          <label style={{ display: "block", marginBottom: "5px" }}>Name:</label>
+      {error && (
+        <div className="p-4 mb-6 text-sm font-bold text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/30 rounded-2xl border border-rose-100 dark:border-rose-900/40 flex items-center gap-3 animate-in slide-in-from-top-2">
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" /></svg>
+          {error}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-2">
+          <label className="block text-xs font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-widest pl-1">
+            Full Name
+          </label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
+            placeholder="e.g. John Doe"
+            className="w-full px-5 py-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-600 transition duration-200 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
           />
         </div>
-        <div>
-          <label style={{ display: "block", marginBottom: "5px" }}>Job:</label>
+
+        <div className="space-y-2">
+          <label className="block text-xs font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-widest pl-1">
+            Job Position
+          </label>
           <input
             type="text"
             value={job}
             onChange={(e) => setJob(e.target.value)}
             required
-            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
+            placeholder="e.g. Senior Developer"
+            className="w-full px-5 py-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-600 transition duration-200 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
           />
         </div>
+
         <button 
           type="submit" 
           disabled={loading}
-          style={{ padding: "10px", background: "#007bff", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}
+          className="w-full py-4 bg-slate-900 dark:bg-blue-600 hover:bg-slate-800 dark:hover:bg-blue-700 active:scale-95 text-white font-extrabold rounded-2xl shadow-xl transition duration-200 disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-3 cursor-pointer"
         >
-          {loading ? "Submitting..." : "Submit"}
+          {loading ? (
+            <>
+              <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+              <span>Registering...</span>
+            </>
+          ) : (
+            <span>Create User Account</span>
+          )}
         </button>
       </form>
     </div>

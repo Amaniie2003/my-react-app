@@ -1,14 +1,7 @@
 import { useEffect, useState } from "react";
 import apiClient from "../services/apiClient";
 import UserDetailModal from "./UserDetailModal";
-
-interface User {
-  id: number;
-  email: string;
-  first_name: string;
-  last_name: string;
-  avatar: string;
-}
+import { User } from "../types/user";
 
 interface UserListProps {
   newUser?: { id: number; name: string; email: string } | null;
@@ -18,14 +11,14 @@ export default function UserList({ newUser }: UserListProps) {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   // State untuk Pagination & searching
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // State untuk kesan Hover pada kad
+  // State untuk detect hover pada kad
   const [hoveredUserId, setHoveredUserId] = useState<number | null>(null);
 
   // Fetch data mengikut nombor page
@@ -45,7 +38,7 @@ export default function UserList({ newUser }: UserListProps) {
       });
   }, [page]);
 
-  // Tambah user baru in list (show at page 1)
+  //Tambah user baru in list (show at page 1)
   useEffect(() => {
     if (newUser && page === 1) {
       const nameParts = newUser.name.trim().split(" ");
@@ -108,7 +101,7 @@ export default function UserList({ newUser }: UserListProps) {
                 return (
                   <div
                     key={user.id}
-                    onClick={() => setSelectedUserId(user.id)}
+                    onClick={() => setSelectedUser(user)}
                     onMouseEnter={() => setHoveredUserId(user.id)}
                     onMouseLeave={() => setHoveredUserId(null)}
                     style={{
@@ -149,7 +142,7 @@ export default function UserList({ newUser }: UserListProps) {
             )}
           </div>
 
-          {/* Kawalan Pagination */}
+          {/* Pagination */}
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "15px", marginTop: "25px" }}>
             <button
               onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
@@ -189,7 +182,11 @@ export default function UserList({ newUser }: UserListProps) {
       )}
 
       {/* Modal User Details */}
-      <UserDetailModal userId={selectedUserId} onClose={() => setSelectedUserId(null)} />
+      <UserDetailModal 
+        userId={selectedUser?.id ?? null} 
+        initialUser={selectedUser}
+        onClose={() => setSelectedUser(null)} 
+      />
     </div>
   );
 }
