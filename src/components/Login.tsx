@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import ForgotPasswordModal from "./ForgotPasswordModal";
 
 export default function Login() {
   const [email, setEmail] = useState("eve.holt@reqres.in");
@@ -8,6 +9,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showForgotModal, setShowForgotModal] = useState(false);
 
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -36,6 +38,11 @@ export default function Login() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleAutoFillDemo = (demoEmail: string, demoPassword: string) => {
+    setEmail(demoEmail);
+    setPassword(demoPassword);
   };
 
   return (
@@ -91,7 +98,13 @@ export default function Login() {
               <label className="block text-xs font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                 Password
               </label>
-              <button type="button" className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline">Forgot?</button>
+              <button
+                type="button"
+                onClick={() => setShowForgotModal(true)}
+                className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer"
+              >
+                Forgot?
+              </button>
             </div>
             <div className="relative group">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-600 transition-colors">
@@ -141,6 +154,14 @@ export default function Login() {
           Secure Access Protocol
         </p>
       </div>
+
+      {/* Forgot Password Modal */}
+      <ForgotPasswordModal
+        isOpen={showForgotModal}
+        onClose={() => setShowForgotModal(false)}
+        initialEmail={email}
+        onAutoFillDemo={handleAutoFillDemo}
+      />
     </div>
   );
 }
